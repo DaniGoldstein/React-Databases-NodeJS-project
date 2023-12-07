@@ -1,71 +1,43 @@
+
+
+
+
 import React from "react"
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-
-
-
-
-
 const ToDos = () => {
-
     const { id } = useParams();
-
     const [newToDO, setNewToDo] = useState('');
-
-    const [myToDos, setMyToDos] = useState([])
-
-    const [onlyCompleted, setOnlyCompleted] = useState(false);
-
-    const [sortDisplay, setsortTodos] = useState(false);
-
-    useEffect(() => { getToDos(); }, []);
-
-
+    const [searchText, setSearch] = useState('')
+    const [myToDos, setMyToDos] = useState([]);
+    const [displayToDos, setDisplayToDos] = useState([]);
+    useEffect(() => {
+        getFitrstToDos();
+    }, []);
+    async function getFitrstToDos() {
+        let toDos = await fetch(`http://localhost:3500/todos?userId=${id}`);
+        let jsonTodos = await toDos.json();
+        setMyToDos(jsonTodos);
+        setDisplayToDos(jsonTodos);
+    }
     async function getToDos() {
         let toDos = await fetch(`http://localhost:3500/todos?userId=${id}`);
         let jsonTodos = await toDos.json();
         setMyToDos(jsonTodos);
-        
-            
-        // }
-        // myUpData();
     }
-
-
-
-
-    const selectCompleted = async () => {
-
-        let toDos = await fetch(`http://localhost:3500/todos?userId=${id}&&completed=false`);
+    async function getToDos() {
+        let toDos = await fetch(`http://localhost:3500/todos?userId=${id}`);
         let jsonTodos = await toDos.json();
         setMyToDos(jsonTodos);
-        setOnlyCompleted(true);
     }
-
-
-
-    const sortToDos = () => {
-        setsortTodos(true); 
-        setMyToDos(myToDos.slice().sort((itemA, itemB) => itemA.title.localeCompare(itemB.title)))
-
-    }
-
-
-
-
     const deleteToDo = async (idTodo) => {
-
         await fetch(`http://localhost:3500/todos/${idTodo}`,
             { method: 'DELETE' });
-
-        if (!onlyCompleted) { getToDos(); console.log("not good"); } else { selectCompleted(); console.log("good"); }
-
-    };
-
-
-    const completedToDo = async (idTodo) => {
-
+        getToDos();
+        setDisplayToDos(displayToDos.filter(todo => todo.id != idTodo))
+    }
+    const completedToDo = async (idTodo, index) => {
         await fetch(`http://localhost:3500/todos/${idTodo}`,
             {
                 method: 'PATCH',
@@ -73,73 +45,62 @@ const ToDos = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ completed: true })
-
-
-                ,
             });
-        console.log(onlyCompleted);
-        if (!onlyCompleted) { getToDos() } else { selectCompleted() }
-
+        getToDos();
+        displayToDos[index].completed = true;
     }
-
-    // const myUpData = () => {
-    //     if (sortDisplay) {
-    //         sortToDos();
-    //     }
-    // }
-
     const addToDo = async () => {
-
-        await fetch(`http://localhost:3500/todos`, {
+        const body = {
+            userId: id,
+            title: newToDO,
+            completed: false
+        }
+        const mypost = await fetch(`http://localhost:3500/todos`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userId: id,
-                title: newToDO,
-                completed: false
-            })
+            body: JSON.stringify(body)
         })
-
-        console.log(onlyCompleted);
-
-        if (!onlyCompleted) { getToDos() } else { selectCompleted() }
-
-
+        getToDos();
         document.getElementById("placeHolder").value = "";
+        console.log(myToDos);
+        setDisplayToDos([...displayToDos, myToDos[myToDos.length - 1]])
+        console.log(displayToDos);
     }
-
-   
-    let dropdown = "none";
-
-
-
+    const sortToDosABC = () => {
+        let arr = Array.from(displayToDos, (item) => item);
+        arr = arr.sort((a, b) => a.title.localeCompare(b.title)); console.log(arr);
+        setDisplayToDos(arr)
+    }
+    const orderOfToDos = () => { setDisplayToDos(myToDos) };
+    const selectCompleted = () => { setDisplayToDos(displayToDos.filter((todo) => todo.completed == false)) }
+    const setSearchText = (event) => {
+        let inputText = event.target.value;
+        setSearch(inputText);
+    }
     return (<div>
-
-
+        <div><input type="text" placeholder="Search ToDo" onChange={setSearchText}></input>
+            <button onClick={() => { setDisplayToDos(myToDos.filter((toDo) => toDo.title.includes(searchText))) }}></button></div>
         <div className="controlToDos">
-            <button onClick={() => { getToDos(); setOnlyCompleted(false) }} >All my ToDos</button>
+            <button onClick={orderOfToDos} >All my ToDos</button>
+            <button onClick={sortToDosABC}>Sort ToDos ABC...</button>
             <button onClick={selectCompleted}>Un completed</button>
-            <button onClick={sortToDos}>Sort ToDos</button>
         </div>
         <Link to={`/Home/${id}`}>To Home Page</Link>
         <br />
         <table className="toDosTable">
-            {myToDos.length > 0 ? myToDos.map((toDo, key) =>
+            {displayToDos.length > 0 ? displayToDos.map((toDo, key) =>
                 <tr>
                     {toDo.completed ?
                         <td> ✔️ </td> :
-
-                        <td> <input type="checkbox" onClick={() => completedToDo(toDo.id)} /></td>}
-
-
-                    {key+1+"."} {toDo.title} <td onClick={() =>{ deleteToDo(toDo.id);if(sortDisplay)sortToDos()}} > 🗑️ </td>
+                        <td> <input type="checkbox" onClick={() => { completedToDo(toDo.id, key) }} /></td>}
+                    {key} {toDo.title} <td onClick={() => deleteToDo(toDo.id)}> 🗑️ </td>
                 </tr>) : null}
-
             <tr><td></td><td><input type="text" id="placeHolder" placeholder="Add ToDo..." onChange={(event) => setNewToDo(event.target.value)} /></td>
                 <td><input type="button" onClick={addToDo} /> </td> </tr>
         </table>
     </div>)
-
+}
+export default ToDos;
 
 
 
