@@ -11,7 +11,7 @@ const[ userName ,setName]=useState("");
 
 async function getUserName() {
 
-  let name = await fetch(`http://localhost:3500/users?Id=${id}`);
+  let name = await fetch(`http://localhost:3500/users?id=${id}`);
   let jsonName = await name.json();
   setName(jsonName[0].name);
   
