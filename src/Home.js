@@ -27,7 +27,7 @@ return(<div className='homeBody'>
     <Link to={`/Home/toDos/${id}`}>ToDos</Link>
     <Link to={`/Home/albums/${id}`}>Albums</Link>
     <Link to={`/Home/posts/${id}`}>Posts</Link>
-
+    <Link to={`/Home/photos/${id}`}>Photos</Link>
 
 </div>
     <Routes>
