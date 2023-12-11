@@ -11,23 +11,29 @@ const[ userName ,setName]=useState("");
 
 async function getUserName() {
 
-  let name = await fetch(`http://localhost:3500/users?Id=${id}`);
+  let name = await fetch(`http://localhost:3500/users?id=${id}`);
   let jsonName = await name.json();
   setName(jsonName[0].name);
   
 }
 
-useEffect(() => { getUserName(); console.log("ggggggg"); }, [])
+useEffect(() => { getUserName();}, [])
 
-return(<>
-     <h1>{userName}</h1>
+return(<div className='homeBody'>
+     <h1>Welcome {userName}</h1>
+     
+<div className='linksMenu'>
 
     <Link to={`/Home/toDos/${id}`}>ToDos</Link>
+    <Link to={`/Home/albums/${id}`}>Albums</Link>
+    <Link to={`/Home/posts/${id}`}>Posts</Link>
 
+
+</div>
     <Routes>
       
  
-    </Routes></>
+    </Routes></div>
 )
 
    

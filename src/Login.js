@@ -36,15 +36,15 @@ export default function Login(props) {
 
     return (
 
-        <>
+        <div className='loginContaner'>
 
             <input type='text' placeholder='Name...' onChange={(event) => { setUserName(event.target.value) }} />
             <input type='password' onChange={(event) => { setPassword(event.target.value) }} />
-            <input type='button' onClick={checkUser} />
+            <input type='button' onClick={checkUser} value={"Login"}/>
 
 
 
-        </>
+        </div>
 
 
     )
