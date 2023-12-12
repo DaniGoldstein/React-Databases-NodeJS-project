@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const Posts =()=>{
 const {id}=useParams();
 const [displayPosts,setDisplayPosts]=useState([]);
@@ -19,9 +19,12 @@ getMyPosts()
 
 },[]);
 
-return (displayPosts.map((post,key)=>
+return (
+    <>
+   <Link to={`/Home/${id}`}>To Home Page </Link> 
+{    displayPosts.map((post,key)=>
     <div>{post.title}</div>
-))
+)}</>)
 }
 
 export default Posts

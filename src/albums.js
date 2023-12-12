@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const Albums=()=>{
 
     const {id}=useParams();
@@ -19,9 +19,10 @@ const Albums=()=>{
     
     },[]);
     
-    return (displaAlbums.map((album,key)=>
+    return (<>
+    <Link to={`/Home/${id}`}>To Home Page </Link>{displaAlbums.map((album,key)=>
         <div>{album.title}</div>
-    ))
+    )}</>)
     
     
    

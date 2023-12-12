@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Photos =()=>{
 const {id}=useParams();
@@ -19,11 +20,11 @@ getMyP()
 },[]);
 
 return (
-    
-    displayPhotos.map((photo,key)=>
+    <><Link to={`/Home/${id}`}>To Home Page </Link>
+  {  displayPhotos.map((photo,key)=>
     <div>
-    <img src={photo.thumbnailUrl}/>
-    </div>)
+    <img src={photo.url}/>
+    </div>)}  </>
 )
 
 }
