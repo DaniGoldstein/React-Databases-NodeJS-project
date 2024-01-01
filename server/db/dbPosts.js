@@ -66,6 +66,7 @@ async function getComments(res, postId) {
         return comments;
     }
     catch (err) {
+        console.log();
         res.status(500).json({ error: err });
     }
 }
@@ -94,6 +95,17 @@ async function addComment(res, comment) {
     }
 }
 
+async function updatePost(id, body) {
+    try {
+        const query = `UPDATE posts SET body =? WHERE id =?`;
+        const [posts] = await pool.query(query, [body, id]);
+        return posts;
+    }
+    catch (err) {
+     return false;  
+    }
+}
+
 
 
 
@@ -108,5 +120,5 @@ module.exports = {
     getSearchPostsById: getSearchPostsById,
     addPost: addPost,
     addComment: addComment,
-   
+   updatePost: updatePost,
 }

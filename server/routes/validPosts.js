@@ -1,24 +1,43 @@
 const joi = require('joi');
-const express = require('express');
 
-async function validateAddPost(req, res, next) {
-  const schema = joi.object({
-    userId: joi.number().required().not().allow(null), 
-    title: joi.string().required(),
-    body: joi.string().required()
-  });
+const pool = require('../db/connection');
 
-  const validationResult = schema.validate(req.body);
 
-  if (validationResult.error) {
-    res.status(400).send(validationResult.error); 
-  } else {
-    next(); 
+async function checkUser(userId) {
+  try {
+    const query = `SELECT * FROM users WHERE id =?`;
+    const [user] = await pool.query(query, [userId]);
+    console.log(user);
+    if (user.length > 0) {
+      return true;
+    }
+    return false;
+
+  } catch (err) {
+    res.status(500).send({ error: err });
+  }
+}
+
+
+async function checkPost(postId) {
+  try {
+    const query = `SELECT * FROM posts WHERE id =?`;
+    const [post] = await pool.query(query, [postId]);
+    if (post.length > 0) {
+
+      return true;
+    }
+    return false;
+  } catch (err) {
+    res.status(500).send({ error: err });
   }
 };
 
+
 module.exports = {
-  validateAddPost: validateAddPost,
+  // validateAddPost: validateAddPost,
+  checkUser: checkUser,
+  checkPost: checkPost
 };
 
 
