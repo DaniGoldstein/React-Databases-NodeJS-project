@@ -4,111 +4,88 @@ const { post } = require('../routes/todosRoute');
 
 
 
-async function getAllDbPosts(res) {
+async function getAllDbPosts() {
 
-    try {
         const [posts] = await pool.query
             (`SELECT * FROM posts`);
         return posts;
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
+   
 };
 
-async function getPostsById(res, userId) {
+async function getPostsById(userId) {
 
-    try {
         const query = `SELECT * FROM posts
     WHERE userId =?`;
         const [posts] = await pool.query(query, [userId]);
         return posts;
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
 
 }
 
-async function searchLatter(res, latter) {
+async function searchLatter(latter) {
 
-    try {
+   
         const query = `SELECT * FROM posts
     WHERE title LIKE ? OR body LIKE?`;
         const [posts] = await pool.query(query, [`%${latter}%`,`%${latter}%`]);
         return (posts);
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
+   
 }
 
-async function getSearchPostsById(res, userId, latter) {
+async function getSearchPostsById(userId, latter) {
 
-    try {
+    
         const query = `SELECT * FROM posts
     WHERE userId =? AND title LIKE?  OR body LIKE?`;
         const [posts] = await pool.query(query, [userId,`%${latter}%`,`%${latter}%`]);
         console.log(posts);
         return posts;
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
-
+    
 
 }
-async function getComments(res, postId) {
-    try {
+async function getComments(postId) {
+   
         const query = `SELECT * FROM comments
  WHERE postId = ?`;
         const [comments] = await pool.query(query, [postId]);
         return comments;
     }
-    catch (err) {
-        console.log();
-        res.status(500).json({ error: err });
-    }
-}
- async function addPost(res, post) {
+ 
 
-    try {
+ async function addPost(post) {
         const query = `INSERT INTO posts (userId, title, body)
     VALUES (?,?,?)`;
         const [posts] = await pool.query(query, [post.userId, post.title, post.body]);
         return posts;
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
+    
+   
 }
 
-async function addComment(res, comment) {
-    try {
+async function addComment(comment) {
+ 
         const query = `INSERT INTO comments (postId, name, email,body)
     VALUES (?,?,?,?)`;
         const [comments] = await pool.query(query, [comment.postId, comment.name, comment.email,comment.body]);
         return comments;
-    }
-    catch (err) {
-        res.status(500).json({ error: err });
-    }
 }
 
 async function updatePost(id, body) {
-    try {
+  
         const query = `UPDATE posts SET body =? WHERE id =?`;
         const [posts] = await pool.query(query, [body, id]);
         return posts;
-    }
-    catch (err) {
-     return false;  
-    }
+
 }
 
 
 
+async function deletePost(id) {
+   
+        const query = `DELETE FROM posts WHERE id =?`;
+        const [{affectedRows}] = await pool.query(query, [id]);
+        console.log(affectedRows);
+        return affectedRows;
 
+}
 
 
 
@@ -121,4 +98,5 @@ module.exports = {
     addPost: addPost,
     addComment: addComment,
    updatePost: updatePost,
+    deletePost: deletePost
 }

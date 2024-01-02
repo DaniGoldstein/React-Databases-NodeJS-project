@@ -1,20 +1,19 @@
 const mysql = require('mysql2/promise');
 const pool = require('./connection');
 
-async function checkPassword(res, userName, password) {
-const query = `SELECT username, password FROM users
-JOIN passwords ON users.id = passwords.userId
-WHERE username = ? AND password = ?`
-try {
-const [userExist ]= await pool.query(query, [userName, password]);
-return userExist;
-}
-catch (err) {
-    console.log(err);
-    res.status(500).send(err);
-};
+
+async function getUserId(userName) {
+
+const query = `SELECT id FROM users
+WHERE username = ?`;
+
+
+    const [userId] = await pool.query(query, [userName]);
+    
+    return userId;
+
 }
 module.exports = {
-    checkPassword:checkPassword
+   getUserId: getUserId,
 };
  

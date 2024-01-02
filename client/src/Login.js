@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -14,19 +15,47 @@ export default function Login(props) {
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
 
-    async function checkUser() { 
+    // async function checkUser() { 
+    //     try {
+    //         const response = await axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`);
+    //         const user = await response.json();
+    //         console.log(user);
+    //         // כאן אתה יכול לבצע פעולות נוספות על משתנה user
+    //     } catch (error) {
+    //         console.error('Error fetching data:', error);
+    //     }   
+    //     // let user =axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`).then(function (response) {
+    //     //    console.log(user); return response.json();
+            
+    //     // })
         
-        let user = await fetch(`http://localhost:3500/users?username=${userName}&&website=${password}`);
+    //     // let jsonUser = await user.json(); console.log(jsonUser);
+    //     // let isUser = jsonUser[0] != undefined;
         
-        let jsonUser = await user.json(); console.log(jsonUser);
-        let isUser = jsonUser[0] != undefined;
+    //     if (user.userExist) {const id = user.userid; navigate(`/home/${id}`);console.log(user); }
         
-        if (isUser) {const id = jsonUser[0].id; navigate(`/home/${id}`);console.log(jsonUser); }
-        
-         else alert('User not found');
+    //      else alert('User not found');
 
 
-    }
+    // }
+    async function checkUser() {
+        try {
+          const response = await axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`);
+          const user = await response.data; // Assuming the user data is directly available in response.data
+          console.log(user);
+      
+          if (user.userExist) {
+            const id = parseInt(user.userid);console.log(user);
+            navigate(`/home/${id}`);
+            
+          } else {
+            alert('User not found');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      
 
 
 
