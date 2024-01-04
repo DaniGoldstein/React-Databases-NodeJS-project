@@ -39,13 +39,15 @@ export default function Login(props) {
 
     // }
     async function checkUser() {
+      
         try {
           const response = await axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`);
           const user = await response.data; // Assuming the user data is directly available in response.data
-          console.log(user);
+          
       
           if (user.userExist) {
-            const id = parseInt(user.userid);console.log(user);
+            localStorage.setItem('auth',`${userName}:${password}`);
+            const id = parseInt(user.userid);
             navigate(`/home/${id}`);
             
           } else {

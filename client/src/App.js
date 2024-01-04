@@ -8,6 +8,9 @@ import Posts from "./posts";
 import Albums from "./albums";
 import Photos from "./photos";
 import "./App.css";
+import Logout from "./logout";
+
+
 
 
 
@@ -18,7 +21,7 @@ const App = () => {
 
   return (
     <>
-
+    <Logout></Logout>
       <Routes>
 
 

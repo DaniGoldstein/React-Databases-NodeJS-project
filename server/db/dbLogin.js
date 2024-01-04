@@ -3,6 +3,7 @@ const pool = require('./connection');
 
 
 async function getUserId(userName) {
+    
 
 const query = `SELECT id FROM users
 WHERE username = ?`;

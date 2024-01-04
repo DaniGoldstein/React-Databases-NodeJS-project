@@ -37,22 +37,39 @@ todosRoute.get("/", async (req, res) => {
 
 
 
-todosRoute.post("/", async (req, res) => {
 
+
+todosRoute.post("/", async (req, res) => {
     const todo = req.body;
     const { userId } = todo;
+
     try {
+
+        const { auth } = req.headers;
+        
+        const userDetails = auth.split(":");
+        
+        const isPermissioned = await checkPermission.checkUserPermission(userDetails[0], userDetails[1]);
+        const isAdmin = await checkPermission.checkAdmin(userDetails[0], userId);
+        
+         
+        if (!isPermissioned || !isAdmin) {
+            res.status(400).send({ error: "Permission denied" });
+            return;
+        }
+
         const affectedRows = await dbTodos.postDbTodos(todo);
+
         if (affectedRows) {
             const [todos] = await dbTodos.getDbTodos(userId);
             res.json(todos);
         }
-    }
-    catch (err) {
+    } catch (err) {
+        console.log(err);
+
         res.status(500).json({ error: err });
     }
-
-})
+});
 
 todosRoute.patch("/updateCompleted/:todoId", async (req, res) => {
     const todoId = req.params.todoId;
@@ -97,16 +114,22 @@ todosRoute.delete("/delete/:todoId", async (req, res) => {
     const { userid } = req.headers;
     const { auth } = req.headers;
     const userDetails = auth.split(":");
-    console.log(req.headers);
-    const affectedRows = await dbTodos.deleteDbTodos(todoId);
+   
     try {
         const isPermissioned = await checkPermission.checkTodoPermission(userDetails[0], userDetails[1], todoId);
-        if (!isPermissioned) { res.status(400).send({ error: "Permission denied" }); return; }
-        if (affectedRows) {
+        if (!isPermissioned) { 
+           
+            res.status(400).send({ error: "Permission denied" }); return; }
+
+        const affectedRows = await dbTodos.deleteDbTodos(todoId);
+       
+        if (affectedRows>0) {
             const [todos] = await dbTodos.getDbTodos(userid);
+            console.log(todos);
             res.json(todos);
+
         }
-        else { (res.status(404).json({ error: "Todo not found" })) }
+        else { (res.status(200).json({ error: "Todo not found" })) }
     }
     catch (err) {
         res.status(500).json({ error: err });

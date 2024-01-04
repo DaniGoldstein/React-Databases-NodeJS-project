@@ -1,15 +1,25 @@
 const pool = require('../db/connection');
 
 async function checkPermission(username, password) {
-    
     const query = `SELECT username, password FROM users
     JOIN passwords ON users.id = passwords.userId
     WHERE username = ? AND password = ?`;
+    
     const [user] =await pool.query(query, [username, password])
-    console.log(user);
     return user.length>0;
 
    
+
+};
+
+async function checkPathPermission(username, password,id) {
+  const query = `SELECT username, password FROM users
+  JOIN passwords ON users.id = passwords.userId
+  WHERE username = ? AND password = ? AND users.id =?`;
+  const [user] =await pool.query(query, [username, password, id])
+  return user.length>0;
+
+ 
 
 };
 
@@ -47,6 +57,17 @@ async function checkTodoPermission(userName, password,todoId) {
 
 };
 
+async function checkAdmin(userName, userId) {
+  const query = `SELECT username, id
+  FROM users
+  WHERE username =? AND id =?`;
+
+  const [certified] =await pool.query(query, [userName,userId]);
+  console.log(certified);
+  return certified.length > 0;
+  
+}
+
 
 
 
@@ -55,6 +76,8 @@ async function checkTodoPermission(userName, password,todoId) {
 module.exports = {
   checkUserPermission: checkPermission,
   checkPostPermission: checkPostPermission,
-  checkTodoPermission: checkTodoPermission
+  checkTodoPermission: checkTodoPermission,
+  checkAdmin: checkAdmin,
+  checkPathPermission: checkPathPermission,
 
 };
