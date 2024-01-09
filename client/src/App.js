@@ -9,6 +9,7 @@ import Albums from "./albums";
 import Photos from "./photos";
 import "./App.css";
 import Logout from "./logout";
+import Details from "./Details";
 
 
 
@@ -28,9 +29,10 @@ const App = () => {
         <Route path='/' element={<Login />}></Route>
         <Route path='/Home/:id' element={<Home  />}></Route>
         <Route path="/Home/toDos/:id" element={ <ToDos />}/>
-        <Route path="/Home/albums/:id" element={ <Albums />}/>
+        {/* <Route path="/Home/albums/:id" element={ <Albums />}/> */}
+        <Route path="/Home/details/:id" element={ <Details/>}/>
         <Route path="/Home/posts/:id" element={ <Posts/>}/>
-        <Route path="/Home/photos/:id" element={ <Photos/>}/>
+        {/* <Route path="/Home/photos/:id" element={ <Photos/>}/> */}
       </Routes>
 
     </>

@@ -15,29 +15,6 @@ export default function Login(props) {
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
 
-    // async function checkUser() { 
-    //     try {
-    //         const response = await axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`);
-    //         const user = await response.json();
-    //         console.log(user);
-    //         // כאן אתה יכול לבצע פעולות נוספות על משתנה user
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //     }   
-    //     // let user =axios.get(`http://localhost:3500/login?userName=${userName}&password=${password}`).then(function (response) {
-    //     //    console.log(user); return response.json();
-            
-    //     // })
-        
-    //     // let jsonUser = await user.json(); console.log(jsonUser);
-    //     // let isUser = jsonUser[0] != undefined;
-        
-    //     if (user.userExist) {const id = user.userid; navigate(`/home/${id}`);console.log(user); }
-        
-    //      else alert('User not found');
-
-
-    // }
     async function checkUser() {
       
         try {
@@ -45,7 +22,7 @@ export default function Login(props) {
           const user = await response.data; // Assuming the user data is directly available in response.data
           
       
-          if (user.userExist) {
+          if (user.userExist) {console.log(user);
             localStorage.setItem('auth',`${userName}:${password}`);
             const id = parseInt(user.userid);
             navigate(`/home/${id}`);

@@ -1,128 +1,165 @@
 .App {
   text-align: center;
+
 }
 
-.loginContaner{  
+body {
+  background-color: rgb(247, 248, 249);
+}
+
+.loginContaner {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  border:1px solid ;
+  border: 1px solid;
   border-radius: 10px;
-  background-color:  cadetblue;;
+  background-color: cadetblue;
   padding: 25px;
   width: 300px;
   margin: 0 auto;
   text-align: center;
-margin-top: 5%;}
+  margin-top: 5%;
+}
 
-.loginContaner *{
+.loginContaner * {
   height: 75px;
   font-size: 30px;
   margin: 20px;
 }
 
-.homeBody{background-color: cadetblue;
-color: aliceblue ;
-text-align: center;
-margin-top: 10%;}
-
-.linksMenu{display: flex;
-justify-content: space-around;
-font-size: 100px;
-margin-top: 10%;
+.homeBody {
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
+  color: aliceblue;
+  text-align: center;
+  font-size: 50px;
+  margin-top: 10%;
+  height: 500px;
 }
-.linksMenu *{color: blue;}
+
+.linksMenu {
+  display: flex;
+  justify-content: space-around;
+  font-size: 100px;
+  margin-top: 5%;
+}
+
+.linksMenu * {
+  color: rgb(71, 71, 74);
+  margin-bottom: 5%;
+}
 
 
-.searchToDo{
-position: absolute;  
-display: flex;
-justify-content: space-around;
-top: 10%;
-border:1px solid ;
-border-radius: 10px;
-background-color:  cadetblue;;
-padding: 10px;
-width: 230px;
-text-align: center;
-margin-left: 2%;}
-
-.filterToDo{
-  position: absolute; 
+.searchToDo {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
   top: 20%;
-  border:1px solid ;
+
   border-radius: 10px;
-  background-color:  cadetblue;;
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
+  ;
   padding: 10px;
   width: 230px;
   text-align: center;
   margin-left: 2%;
-  
 }
-.sortTodos{
-  position: absolute; 
-  top: 20%;
-  border:1px solid ;
+
+.filterToDo {
+  position: absolute;
+  top: 30%;
+
   border-radius: 10px;
-  background-color:  cadetblue;;
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
+  ;
+  padding: 10px;
+  width: 230px;
+  text-align: center;
+  margin-left: 2%;
+
+}
+
+.sortTodos {
+  position: absolute;
+  top: 20%;
+
+  border-radius: 10px;
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
+  ;
   padding: 10px;
   width: 230px;
   text-align: center;
   left: 2%;
   top: 48%;
 }
-.filterOptions{
+
+.filterOptions {
   display: flex;
   justify-content: space-around;
 }
 
-.sortOptions{  display: flex;
-  justify-content: space-around;}
+.sortOptions {
+  display: flex;
+  justify-content: space-around;
+}
 
-.toDosTable { 
-  
+.toDosTable {
+
   border-collapse: collapse;
-  border: 1px solid;
+
+  border: 8px solid  cadetblue;
+  
   width: 50%;
-  margin: 0 auto ;
+  margin: 0 auto;
   margin-top: 3%;
   padding: 30px;
 
 }
 
-th, td ,tr{ text-align: center;
+th,
+td,
+tr {
   text-align: left;
   padding: 20px;
   font-size: 25px;
 }
 
 tr:nth-child(even) {
-  background-color: #D6EEEE;
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
 }
 
-.addTodo{ 
-  background-color: #D6EEEE;
+.addTodo {
+  background-image: linear-gradient(to right, cadetblue, rgb(202, 235, 235), 50%, cadetblue);
   display: flex;
-  width: 50%;
-  margin : 0 auto;
+  width: 63%;
+  margin: 0 auto;
   padding: 5px;
   margin-top: 2%;
   height: 60px;
 }
-.addTodo *{
-  width: 650px; 
-  font-size:30px ;   
-  justify-content: space-around;
-border: 5px solid  #D6EEEE;}
-.addTodoBtton{ width: 80px;}
- .controlToDos , button:hover{background-color: cadetblue;}
 
- .editTodo{
-  position:static;
+.addTodo * {
+  width: 1000px;
+  font-size: 30px;
+  justify-content: space-around;
+  border: 5px solid #D6EEEE;
+}
+
+.addTodoBtton {
+  width: 80px;
+  margin: auto;
+}
+
+.controlToDos,
+button:hover {
+  background-color: cadetblue;
+}
+
+.editTodo {
+  position: static;
   width: 900px;
   height: 30px;
   border: 0;
   margin-top: 20px;
   font-size: 30px;
   background-color: rgb(234, 240, 240);
- }
+}

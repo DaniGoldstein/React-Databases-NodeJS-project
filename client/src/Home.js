@@ -3,7 +3,8 @@ import ToDos from './ToDos'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState , useEffect} from 'react';
 import axios from 'axios';
-import Logout from './logout';
+import Details from './Details';
+
 
 
 
@@ -17,7 +18,7 @@ const { id }=useParams();
 const[ userName ,setName]=useState("");
 
 useEffect(() => {
-  (async () => {
+ ( async () => {
     if (!localStorage.getItem('auth')) {
       navigate('/login');
       return;
@@ -31,7 +32,7 @@ useEffect(() => {
       });
 
       const isExisting = response.data;
-      console.log(isExisting);
+     
 
       if (!isExisting) {
         navigate('/login');
@@ -41,33 +42,40 @@ useEffect(() => {
       console.log(err);
       navigate('/login');
     }
-  })();
+  })()
 }, []);
+
+
 
 async function getUserName() {
 
-  
-  
-  const name = await axios.get(`http://localhost:3500/user/${id}`); 
-  const user = await name.data; 
+  try{
+  const data = await axios.get(`http://localhost:3500/user/${id}`); 
+  const user = await data.data; 
   console.log(user);
-  setName(user);
-  
+  setName(user.username);
 }
+  
+  catch (err) {console.log(err);
+  
+  
+}}
 
 useEffect(() => { getUserName();}, [])
 
 return(<div className='homeBody'>
-  {/* <Logout/> */}
+  
      <h1>Welcome {userName}</h1>
      
 <div className='linksMenu'>
 
     <Link to={`/Home/toDos/${id}`}>Todos</Link>
-    <Link to={`/Home/albums/${id}`}>Albums</Link>
+   
     <Link to={`/Home/posts/${id}`}>Posts</Link>
-    <Link to={`/Home/photos/${id}`}>Photos</Link>
 
+    <Link to={`/Home/details/${id}`}>Details</Link>
+    {/* <Link to={`/Home/photos/${id}`}>Photos</Link> */}
+ {/* <Link to={`/Home/albums/${id}`}>Albums</Link> */}
 </div>
     <Routes>
       
@@ -78,6 +86,7 @@ return(<div className='homeBody'>
    
 
 }
+
 
 export default Home;
 

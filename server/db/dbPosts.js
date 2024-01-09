@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 const pool = require('./connection');
-const { post } = require('../routes/todosRoute');
+
 
 
 
@@ -8,7 +8,7 @@ async function getAllDbPosts() {
 
         const [posts] = await pool.query
             (`SELECT * FROM posts`);
-        return posts;
+        return posts;  
    
 };
 
@@ -47,7 +47,8 @@ async function getComments(postId) {
         const query = `SELECT * FROM comments
  WHERE postId = ?`;
         const [comments] = await pool.query(query, [postId]);
-        return comments;
+        console.log(comments);
+        return comments; 
     }
  
 
@@ -81,6 +82,7 @@ async function updatePost(id, body) {
 async function deletePost(id) {
    
         const query = `DELETE FROM posts WHERE id =?`;
+        console.log(1111);
         const [{affectedRows}] = await pool.query(query, [id]);
         console.log(affectedRows);
         return affectedRows;

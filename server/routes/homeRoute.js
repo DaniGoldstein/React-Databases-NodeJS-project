@@ -5,7 +5,8 @@ const homeDb = require('../db/homeDb.js');
 homeRoute.get('/:userId', async (req, res) => {
 const { userId } = req.params;
 try{
-    const [[{username}]]= await homeDb.getUserName(userId);
+    const [username]= await homeDb.getUserName(userId);
+    console.log(username);
     res.json(username);
 }
 

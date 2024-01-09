@@ -108,7 +108,7 @@ postsRoute.patch("/update/:id", async (req, res) => {
     const userDetails = auth.split(":");
     try {
         const isPermissioned = await checkPermission.checkPostPermission(userDetails[0], userDetails[1], id);
-       
+
 
         if (!isPermissioned) { res.status(400).send({ error: "Permission denied" }); return; }
 
@@ -135,12 +135,17 @@ postsRoute.delete("/delete/:id", async (req, res) => {
     const { auth } = req.headers;
     const userDetails = auth.split(":");
     try {
+
         const isPermissioned = await checkPermission.checkPostPermission(userDetails[0], userDetails[1], id);
-        if (!isPermissioned) { res.status(400).send({ error: "Permission denied" }); return; }
+        if (!isPermissioned) { res.json(false); return; }
         const affectedRows = await dbPosts.deletePost(id);
         if (affectedRows) {
-            const posts = await dbPosts.getAllDbPosts(id);
+
+
+            const posts = await dbPosts.getAllDbPosts();
+            console.log(posts);
             res.json(posts);
+
         }
         else { res.status(400).json({ error: "Failed to delete post" }); }
     }
